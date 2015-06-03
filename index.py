@@ -70,11 +70,13 @@ def make_table(variable1,variable2):
     # Variables we want to save
     xvar = tmp.xvar.tolist()
     yvar = tmp.yvar.tolist()
+    corval = tmp["cor.val"].tolist()
     tarima = tmp["t.arima"].tolist()
+    tdrift = tmp["t.drift"].tolist()
     nobs = tmp.nobs.tolist()
     pval_bh = tmp.pval_bh.tolist()
 
-    return zip(xvar,yvar,tarima,nobs,pval_bh)
+    return zip(xvar,yvar,corval,tarima,tdrift,nobs,pval_bh)
 
 
 if __name__ == '__main__':

@@ -35,11 +35,12 @@
 		<nav id="main_nav" style='margin-top:20px'>
 			<ul>
 				<li>
-					<a href="">Select Two Variables</a>
+					<a href="">SELECT THE FIRST VARIABLE</a>
 					<ul>
                                             {% for category,subcategory in dropdown.iteritems() %}
 						<li><a href="">{{ lookup[category] }}</a>
                                                     <ul>
+                                                        <li style="background-color:#4F92AF"><a href="#">SELECT THE SECOND VARIABLE</a></li>
                                                     {% for item in subcategory %}
     							<li><a href="/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
                                                     {% endfor %}                     
@@ -57,19 +58,23 @@
 <table id ="tabley" class="table">
   <thead>
     <tr>
-      <th>X Variable</th>
-      <th>Y Variable</th>
-      <th>T (Arima)</th>
-      <th>Number Obs.</th>
-      <th>P-Value (BH)</th>
+      <th style="background-color:#4F92Af">X Variable</th>
+      <th style="background-color:#4F92Af">Y Variable</th>
+      <th style="background-color:#4F92Af">Correlation</th>
+      <th style="background-color:#4F92Af">T (Arima)</th>
+      <th style="background-color:#4F92Af">T (Drift)</th>
+      <th style="background-color:#4F92Af">Number Obs.</th>
+      <th style="background-color:#4F92Af">P-Value (BH)</th>
     </tr>
   </thead>
   <tbody>  
-      {% for xvar, yvar, tarima, nobs, pval in table %}
+      {% for xvar, yvar, corval, tarima, tdrift, nobs, pval in table %}
     <tr>
       <td>{{ xvar }}</td>
       <td>{{ yvar }}</td>
+      <td>{{ corval }}</td>
       <td>{{ tarima }}</td>
+      <td>{{ tdrift }}</td>
       <td>{{ nobs }}</td>
       <td>{{ pval }}</td>
    </tr>
