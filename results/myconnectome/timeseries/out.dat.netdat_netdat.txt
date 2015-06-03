@@ -1,0 +1,3 @@
+"xvar" "yvar" "cor.val" "t.arima" "arima.p" "t.drift" "drift.p" "AR" "MA" "nobs" "pval_bh"
+"1" "modularity_weighted" "efficiency_weighted" 0.55927782239382 2.50239086234301 0.012335765214721 -0.00250960580745042 0.9979976263744 1 1 84 0.012335765214721
+"2" "efficiency_weighted" "modularity_weighted" 0.55927782239382 6.39801074224237 1.57414215741891e-10 0 1 2 1 84 3.14828431483782e-10
