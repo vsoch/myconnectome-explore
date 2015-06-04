@@ -49,6 +49,7 @@
                                                     <ul>
                                                         <li style="background-color:#4F92AF"><a href="#">SELECT THE SECOND VARIABLE</a></li>
                                                     {% for item in subcategory %}
+                                                        <!-- Note - if deployed in subdirectory of server, you must hard code path here-->
     							<li><a href="/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
                                                     {% endfor %}                     
                                                     </ul>
@@ -61,7 +62,7 @@
 
 {% if table is defined %}
 <div class="details">	
-Threshold Filter:
+P-Value Threshold:
   <<input id="thresh-search" type=number step=1000 />
 <table id ="tabley" class="table">
   <thead>
@@ -71,7 +72,7 @@ Threshold Filter:
       <th style="background-color:#4F92Af">correlation</th>
       <th style="background-color:#4F92Af">T (arima)</th>
       <th style="background-color:#4F92Af">number obs.</th>
-      <th style="background-color:#4F92Af">pvalue</th>
+      <th title="(BH) correction" style="background-color:#4F92Af">pvalue</th>
     </tr>
   </thead>
   <tbody>  
