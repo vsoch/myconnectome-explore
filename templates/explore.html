@@ -9,10 +9,17 @@
 
   <script>
       $(document).ready( function() {
-        $('#tabley').dynatable({
+        $('#tabley').bind('dynatable:init', function(e, dynatable) {
+      dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
+       return parseFloat(record.pvalue.replace(/,/,'')) <= parseFloat(queryValue);
+      };
+    }).dynatable({
            table: {
              defaultColumnIdStyle: 'trimDash'
-           }
+           },
+       inputs: {
+        queries: $('#thresh-search')
+      }
         });
       });
     </script>
@@ -54,17 +61,17 @@
 
 {% if table is defined %}
 <div class="details">	
-
+Threshold Filter:
+  <<input id="thresh-search" type=number step=1000 />
 <table id ="tabley" class="table">
   <thead>
     <tr>
-      <th style="background-color:#4F92Af">X Variable</th>
-      <th style="background-color:#4F92Af">Y Variable</th>
-      <th style="background-color:#4F92Af">Correlation</th>
-      <th style="background-color:#4F92Af">T (Arima)</th>
-      <th style="background-color:#4F92Af">T (Drift)</th>
-      <th style="background-color:#4F92Af">Number Obs.</th>
-      <th style="background-color:#4F92Af">P-Value (BH)</th>
+      <th style="background-color:#4F92Af">x variable</th>
+      <th style="background-color:#4F92Af">y variable</th>
+      <th style="background-color:#4F92Af">correlation</th>
+      <th style="background-color:#4F92Af">T (arima)</th>
+      <th style="background-color:#4F92Af">number obs.</th>
+      <th style="background-color:#4F92Af">pvalue</th>
     </tr>
   </thead>
   <tbody>  
@@ -74,7 +81,6 @@
       <td>{{ yvar }}</td>
       <td>{{ corval }}</td>
       <td>{{ tarima }}</td>
-      <td>{{ tdrift }}</td>
       <td>{{ nobs }}</td>
       <td>{{ pval }}</td>
    </tr>
