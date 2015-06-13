@@ -165,7 +165,7 @@ def render_table(variable1,variable2):
 def make_table(variable1,variable2):
 
     # Read in appropriate data file
-    data_file = 'results/myconnectome/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
+    data_file = 'results/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
     tmp = pandas.read_csv(data_file,sep=" ")
     
     # Variables we want to save
