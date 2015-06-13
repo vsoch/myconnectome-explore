@@ -45,7 +45,7 @@ Your .htaccess should look like this:
 
 The fourth line is the path to the myconnectome.fcgi
 
-4. Finally, you need to make your myconnectome.fcgi executable
+Finally, you need to make your myconnectome.fcgi executable
 
       chmod u+x myconnectome.fcgi
 
