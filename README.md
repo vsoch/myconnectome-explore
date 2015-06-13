@@ -28,6 +28,7 @@ Don't worry about index.py - that is the executable that is integrated into the 
 2. You should change "debug" "True" to debug "False" in the databrowser.py file.
 3. In the folder you need two files: an .htaccess and a myconnectome.fcgi. The myconnectome.fcgi should look as follows:
 
+
       #!/home/youruser/local/anaconda/bin/python
       from flup.server.fcgi import WSGIServer
       from databrowser import app as application
