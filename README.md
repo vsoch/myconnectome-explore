@@ -24,10 +24,7 @@ Don't worry about index.py - that is the executable that is integrated into the 
 
 ### deployment
 
-1. Your deployment environment will need flask installed to the python that will be running the application. If you are creating a local python environment to run the application, we reccommend using anaconda, as it comes with most of the libraries that you should need,
-2. You should change "debug" "True" to debug "False" in the databrowser.py file.
-3. In the folder you need two files: an .htaccess and a myconnectome.fcgi. The myconnectome.fcgi should look as follows:
-
+Your deployment environment will need flask installed to the python that will be running the application. If you are creating a local python environment to run the application, we reccommend using anaconda, as it comes with most of the libraries that you should need. You should also change "debug" "True" to debug "False" in the databrowser.py file. FInally, in the folder you need two files: an .htaccess and a myconnectome.fcgi. The myconnectome.fcgi should look as follows:
 
       #!/home/youruser/local/anaconda/bin/python
       from flup.server.fcgi import WSGIServer
