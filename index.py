@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, Markup
 from flask.ext.autoindex import AutoIndex
 from subprocess import Popen
+from glob import glob
+import pandas
 import numpy
 import os
 
@@ -66,7 +68,7 @@ def show_analyses():
                        ('/var/www/results/myconnectome/timeseries/wincorr_heatmap.pdf','Within-network connectivity timeseries heatmap'),
                        ('/var/www/results/myconnectome/timeseries/wgcna_heatmap.pdf','Gene expression module timeseries heatmap'),
                        ('/var/www/results/myconnectome/timeseries','Listing of all files')]
-  rna_files =        [('/var/www/results/myconnectome/rna-seq/RNAseq_data_preparation.html','RNA-seq data preparation'),
+    rna_files =        [('/var/www/results/myconnectome/rna-seq/RNAseq_data_preparation.html','RNA-seq data preparation'),
                        ('/var/www/results/myconnectome/rna-seq/Run_WGCNA.html','RNA-seq WGCNA analysis'),
                        ('/var/www/results/myconnectome/rna-seq/snyderome/Snyderome_data_preparation.html','RNA-seq Snyderome analysis'),
                        ('/var/www/results/myconnectome/rna-seq','Listing of all files')]

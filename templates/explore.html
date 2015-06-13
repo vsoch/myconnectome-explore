@@ -50,7 +50,7 @@
                                                         <li style="background-color:#4F92AF"><a href="#">SELECT THE SECOND VARIABLE</a></li>
                                                     {% for item in subcategory %}
                                                         <!-- Note - if deployed in subdirectory of server, you must hard code path here-->
-    							<li><a href="/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
+    							<li><a href="/explore/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
                                                     {% endfor %}                     
                                                     </ul>
                                                 </li>                
