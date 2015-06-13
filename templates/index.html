@@ -64,6 +64,12 @@
             <li><a href='{{ meta_url }}' style='{{ meta_style }}' title='{{ meta_title }}'>{{ meta_description }}</a></li>
             {% endfor %}
         </ul>
+        <h2>Resting state fMRI analyses</h2>
+        <ul>
+            {% for rsfmri_url, rsfmri_description, rsfmri_style, rsfmri_title in rsfmri_context %}
+    	    <li><a href='{{ rsfmri_url }}' style='{{ rsfmri_style }}' title='{{ rsfmri_title }}'>{{ rsfmri_description }}</a></li>
+            {% endfor %}		
+	</ul>  
     </div><!-- End Right Box-->
   </div>
 </div>
