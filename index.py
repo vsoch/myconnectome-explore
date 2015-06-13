@@ -23,7 +23,7 @@ def get_lookup():
 
 def prepare_data():
 
-    data_files = glob('results/myconnectome/myconnectome/timeseries/out*.txt')
+    data_files = glob('results/myconnectome/timeseries/out*.txt')
     data_files.sort()
     dont_include = ['fd','pindex']
 
