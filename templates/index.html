@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='description' content='MyConnectome Analyses, Poldracklab'>
+    <meta name='author' content='Poldracklab'>
+
+    <title>MyConnectome Analyses</title>
+
+    <!-- Bootstrap -->
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css' rel='stylesheet'>
+
+    <!--Style-->
+    <link rel=stylesheet type=text/css href='{{ url_for('static', filename='style.css') }}'>
+    
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'></script>
+      <script src='https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js'></script>
+    <![endif]-->
+  </head>
+  <body>
+<div id='wrapper'>
+  <div class='container'>
+    <!-- Left Box-->
+    <div class='logo_box'><h1>MyConnectome<br/>Analyses</h1>
+       <div class='links'>
+        <!-- Analysis Status Button-->
+        {% if analysis_status == 'Check for Error' %}
+        <a class='btn btn-default' href='/log' role='button' style='margin-bottom:40px'>{{ analysis_status }}</a>
+        {% else %}
+        <a class='btn btn-default' href='#' role='button' style='margin-bottom:40px' disabled>{{ analysis_status }}</a>
+        {% endif %}
+            <ul>
+               <li><a href='https://github.com/poldrack/myconnectome-vm' target='_blank'>Learn more about the MyConnectome Virtual Machine</a></li>
+
+               <li><a href='http://myconnectome.org' target='_blank'>Learn more about the MyConnectome Project</a></li>
+             </ul>
+       </div>
+    </div><!-- End Left Box-->
+
+    <!-- Right Box-->
+    <div class='main_box'>
+        <h2>Timeseries analyses</h2>
+        <ul>
+            {% for timeseries_url, timeseries_description, timeseries_style, timeseries_title in timeseries_context %}
+            <li><a href='{{ timeseries_url }}' style='{{ timeseries_style }}' title='{{ timeseries_title }}'>{{ timeseries_description }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2>RNA-seq analyses</h2>
+        <ul>
+            {% for rna_url, rna_description, rna_style, rna_title in rna_context %}
+            <li><a href='{{ rna_url }}' style='{{ rna_style }}' title='{{ rna_title }}'>{{ rna_description }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2>Metabolomic analyses</h2>
+        <ul>
+            {% for meta_url, meta_description, meta_style, meta_title in meta_context %}
+            <li><a href='{{ meta_url }}' style='{{ meta_style }}' title='{{ meta_title }}'>{{ meta_description }}</a></li>
+            {% endfor %}
+        </ul>
+    </div><!-- End Right Box-->
+  </div>
+</div>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+  </body>
+</html>
