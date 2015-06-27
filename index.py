@@ -63,12 +63,9 @@ def show_analyses():
     timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses.html','Timeseries analyses'),
                        ('/var/www/results/myconnectome/timeseries/Make_Timeseries_Heatmaps.html','Timeseries heatmaps'),
                        ('/var/www/results/myconnectome/timeseries/Make_timeseries_plots.html','Timeseries plots'),
-                       ('/var/www/results/myconnectome/timeseries/behav_heatmap.pdf','Behavioral timeseries heatmap'),
-                       ('/var/www/results/myconnectome/timeseries/wincorr_heatmap.pdf','Within-network connectivity timeseries heatmap'),
-                       ('/var/www/results/myconnectome/timeseries/wincorr_heatmap.pdf','Within-network connectivity timeseries heatmap'),
-                       ('/var/www/results/myconnectome/timeseries/wgcna_heatmap.pdf','Gene expression module timeseries heatmap'),
                        ('/var/www/results/myconnectome/timeseries','Listing of all files')]
     rna_files =        [('/var/www/results/myconnectome/rna-seq/RNAseq_data_preparation.html','RNA-seq data preparation'),
+                       ('/var/www/results/myconnectome/rna-seq/QA_summary_rnaseq.html','RNA-seq QA results'),
                        ('/var/www/results/myconnectome/rna-seq/Run_WGCNA.html','RNA-seq WGCNA analysis'),
                        ('/var/www/results/myconnectome/rna-seq/snyderome/Snyderome_data_preparation.html','RNA-seq Snyderome analysis'),
                        ('/var/www/results/myconnectome/rna-seq','Listing of all files')]
@@ -76,7 +73,8 @@ def show_analyses():
     meta_files =       [('/var/www/results/myconnectome/metabolomics/Metabolomics_clustering.html','Metabolomics data preparation'),
                         ('/var/www/results/myconnectome/metabolomics','Listing of all files')]
 
-    rsfmri_files =       [('/var/www/results/myconnectome/rsfmri','Listing of all files')]
+    rsfmri_files =       [('/var/www/results/myconnectome/rsfmri/QA_summary_rsfmri.html','Resting fMRI QA results'),
+                          ('/var/www/results/myconnectome/rsfmri','Listing of all files')]
     
     # How many green links should we have?
     number_analyses = len(meta_files) + len(rna_files) + len(timeseries_files) + len(rsfmri_files)
