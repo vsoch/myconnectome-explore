@@ -6,43 +6,71 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta name='description' content='MyConnectome Analyses, Poldracklab'>
     <meta name='author' content='Poldracklab'>
-    <link rel='shortcut icon' href='assets/img/favicon.png'>
-
+  
     <title>MyConnectome Logs</title>
 
-    <!--Style-->
-    <link rel=stylesheet type=text/css href='{{ url_for('static', filename='style.css') }}'>
+     {% include 'header.html' %}
+    
+    </head>
 
-    <!-- Bootstrap -->
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
-    <!-- Optional theme -->
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css'>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
-    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+<body class="background">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js'></script>
-      <script src='https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js'></script>
-    <![endif]-->
-</head>
-
-<body>
-<div class='wrapper' style='padding-left:20px;padding-top:20px;padding-right:20px'>
-    <!-- Nav tabs -->
-    <ul class='nav nav-tabs' role='tablist'>
-        <li class='active'><a href='#error' role='tab' data-toggle='tab' style='color:#ACBAC1'>Error Log</a></li>
-        <li><a href='#output' role='tab' data-toggle='tab' style='color:#ACBAC1'>Output Log</a></li>
-    </ul>
+{% include 'navigation.html' %}
+<div class='wrapper'>
+{% include 'banner.html' %}
+<!-- Nav tabs -->
+<ul class='nav nav-pills tabspan' role='tablist'>
+        <li class='active'><a href='#error' style="border-radius:0" role='tab' data-toggle='tab'>Error Log</a></li>
+        <li><a href='#output' role='tab' style="border-radius:0" data-toggle='tab'>Output Log</a></li>
+</ul>
     <!-- Tab panes -->
     <div class='tab-content'>
         <div class='tab-pane active' id='error'>
-            <div class='well well-lg' style='margin-top:20px;overflow:scroll'>{{err_log}}</div>
+            <div class='well well-lg box' style='margin-top:10px;overflow:scroll'>{{err_log}}</div>
         </div>
             <div class='tab-pane' id='output'>
-             <div class='well well-lg' style='margin-top:20px; overflow:scroll;'>{{out_log}}</div>
+             <div class='well well-lg box' style='margin-top:10px;overflow:scroll;'>{{out_log}}</div>
         </div>
     </div>
+<script>
+
+// Dynamic banner
+var width = 1600,
+    height = 100
+
+var svg = d3.select("#banner").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+// the data will be appended here
+raw = {"letters":[{{ letters|safe }}],
+       "colors":[{{ colors|safe }}],
+       "x":[{{ xcoords|safe }}],
+       "y":[{{ ycoords|safe }}]};
+
+data = []
+for (i = 0; i < raw.letters.length; i++) { 
+  data.push({"letter":raw.letters[i],"color":raw.colors[i],"x":+raw.x[i],"y":+raw.y[i]});
+}
+
+var text = svg.selectAll("text")
+    .data(data)
+    .enter()
+    .append("text");
+
+var textLabels = text
+    .attr("x", function(d,i) { return d.x; })
+    .attr("y", function(d,i) { return d.y + 30; })
+    .style("fill",function(d){ return d.color })
+    .style("font-family","'Roboto Condensed', sans-serif")
+    .text( function (d) { return d.letter })
+    .on('mouseover.color', function(d) {
+        d3.select(this).style("fill", "#2997ab");
+     })
+
+</script>
+    <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
   </body>
+{% include 'footer.html' %}
 </html>
