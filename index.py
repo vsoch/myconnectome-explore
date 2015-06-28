@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, Markup
+from banner import generate, format_data
 from flask.ext.autoindex import AutoIndex
 from subprocess import Popen
 from glob import glob
@@ -19,6 +20,19 @@ def get_lookup():
               "bwcorr":"between network correlation",
               "wincorr":"within-network correlation",
               "immport":"gene expression (immune)"}
+
+
+def prepare_banner():
+    letters, colors, xcoords, ycoords = generate(hidden="MYCONNECTOME",
+                                                 color="#CCC",
+                                                 color_hidden="#000")
+ 
+    # Format for d3 input
+    letters = format_data(letters)
+    colors = format_data(colors)
+    xcoords = format_data([str(x) for x in xcoords])
+    ycoords = format_data([str(x) for x in ycoords])
+    return letters,colors,xcoords,ycoords
 
 
 def prepare_data():
@@ -47,8 +61,17 @@ def autoindex(path='.'):
 def show_log():
     err_log = read_log('/var/www/results/myconnectome/myconnectome_job.err')
     out_log = read_log('/var/www/results/myconnectome/myconnectome_job.out')
+
+    # Generate banner
+    letters,colors,xcoords,ycoords = prepare_banner()
+
     return render_template('log.html',err_log=err_log,
-                                      out_log=out_log)
+                                      out_log=out_log,
+                                      letters=letters,
+                                      colors=colors,
+                                      xcoords=xcoords,
+                                      ycoords=ycoords)
+
 
 def read_log(logfile):
     logg = open(logfile,'rb').readlines()
@@ -99,11 +122,18 @@ def show_analyses():
         else:
             analysis_status = 'Check for Error'
 
+    # Generate banner
+    letters,colors,xcoords,ycoords = prepare_banner()
+
     return render_template('index.html',timeseries_context=timeseries_context,
                                         rna_context=rna_context,
                                         meta_context=meta_context,
                                         analysis_status=analysis_status,
-                                        rsfmri_context=rsfmri_context)
+                                        rsfmri_context=rsfmri_context,
+                                        letters=letters,
+                                        colors=colors,
+                                        xcoords=xcoords,
+                                        ycoords=ycoords)
 
 # Check if python process is still running
 def check_process():
@@ -114,7 +144,7 @@ def check_process():
         return False
     else:
         return True
-
+ 
 def create_context(links,counter):
     urls = []; descriptions = []; styles = []; titles = []
     for link in links:
@@ -129,7 +159,7 @@ def create_context(links,counter):
         else:
             urls.append('#')
             descriptions.append('%s %s' %(description,'(in progress)'))
-            styles.append('color:#ACBAC1;')
+            styles.append('color:#666;')
             titles.append('PROCESSING')
     return zip(urls,descriptions,styles,titles),counter
 
@@ -143,8 +173,16 @@ def data_chooser():
 
     # Human interpretable labels
     lookup = get_lookup()
-    
-    return render_template('explore.html',dropdown=dropdown,lookup=lookup)
+ 
+    # Generate banner
+    letters,colors,xcoords,ycoords = prepare_banner()
+   
+    return render_template('explore.html',dropdown=dropdown,
+                                          lookup=lookup,
+                                          letters=letters,
+                                          colors=colors,
+                                          xcoords=xcoords,
+                                          ycoords=ycoords)
 
 # Variable selection
 @app.route('/explore/<variable1>/<variable2>')
@@ -156,14 +194,24 @@ def render_table(variable1,variable2):
     lookup = get_lookup()
     table = make_table(variable1,variable2)
 
-    return render_template('explore.html',dropdown=dropdown,lookup=lookup,table=table)
+    # Generate banner
+    letters,colors,xcoords,ycoords = prepare_banner()
+
+    return render_template('explore.html',dropdown=dropdown,
+                                          lookup=lookup,
+                                          table=table,
+                                          letters=letters,
+                                          colors=colors,
+                                          xcoords=xcoords,
+                                          ycoords=ycoords)
 
 
 # Read in a particular input file to render table
 def make_table(variable1,variable2):
 
     # Read in appropriate data file
-    data_file = 'results/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
+    data_file =  'results/pre-generated/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
+#    data_file = 'results/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
     tmp = pandas.read_csv(data_file,sep=" ")
     
     # Variables we want to save
@@ -179,5 +227,5 @@ def make_table(variable1,variable2):
 
 
 if __name__ == '__main__':
-    app.debug = False
+    app.debug = True
     app.run(host='0.0.0.0')
