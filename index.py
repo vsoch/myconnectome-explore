@@ -60,14 +60,15 @@ def read_log(logfile):
 @app.route('/')
 def show_analyses():
 
-    timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses.html','Timeseries analyses'),
-                       ('/var/www/results/myconnectome/timeseries/Make_Timeseries_Heatmaps.html','Timeseries heatmaps'),
+    timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses.html','Timeseries analysis results'),
                        ('/var/www/results/myconnectome/timeseries/Make_timeseries_plots.html','Timeseries plots'),
+                       ('/var/www/results/myconnectome/timeseries/Make_combined_timeseries_table.html','Table of top timeseries results'),
+                       ('/var/www/results/myconnectome/timeseries/Make_Timeseries_Heatmaps.html','Timeseries longitudinal heatmaps'),
                        ('/var/www/results/myconnectome/timeseries','Listing of all files')]
     rna_files =        [('/var/www/results/myconnectome/rna-seq/RNAseq_data_preparation.html','RNA-seq data preparation'),
                        ('/var/www/results/myconnectome/rna-seq/QA_summary_rnaseq.html','RNA-seq QA results'),
                        ('/var/www/results/myconnectome/rna-seq/Run_WGCNA.html','RNA-seq WGCNA analysis'),
-                       ('/var/www/results/myconnectome/rna-seq/snyderome/Snyderome_data_preparation.html','RNA-seq Snyderome analysis'),
+                       ('/var/www/results/myconnectome/rna-seq/snyderome/Snyderome_data_preparation.html','Snyderome vs. MyConnectome analysis'),
                        ('/var/www/results/myconnectome/rna-seq','Listing of all files')]
 
     meta_files =       [('/var/www/results/myconnectome/metabolomics/Metabolomics_clustering.html','Metabolomics data preparation'),
