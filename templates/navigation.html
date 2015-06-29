@@ -9,7 +9,11 @@
           <ul class="nav navbar-nav navbar-right">
             <li class="farfromtop"><a href="/">Home</a></li>
             <li class="farfromtop"><a href="/log">Log</a></li>
+            {% if analysis_status == 'Analysis Complete' %}
             <li class="farfromtop" style="padding-right:60px"><a href="/explore">Data Explorer</a></li>
+            {% else %}
+            <li class="farfromtop" style="padding-right:60px"><a href="#"></a></li>
+            {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>
