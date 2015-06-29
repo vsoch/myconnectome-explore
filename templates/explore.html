@@ -24,7 +24,7 @@
       $(document).ready( function() {
         $('#tabley').bind('dynatable:init', function(e, dynatable) {
       dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
-       return parseFloat(record.pvalue.replace(/,/,'')) <= parseFloat(queryValue);
+       return parseFloat(record.qvalue.replace(/,/,'')) <= parseFloat(queryValue);
       };
     }).dynatable({
            table: {
@@ -75,7 +75,7 @@
                <th>correlation</th>
                <th>T (arima)</th>
                <th style="width:130px">number obs.</th>
-               <th title="(BH) correction">FDR q-value</th>
+               <th title="(BH) correction">qvalue</th>
            </tr>
        </thead>
        <tbody>  
