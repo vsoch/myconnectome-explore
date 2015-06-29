@@ -137,7 +137,8 @@ def show_analyses():
 
 # Check if python process is still running
 def check_process():
-    process_id = int(open('/home/vagrant/myconnectome/.started','rb').readlines()[0][0:-1])
+    home_folder = os.environ['HOME']
+    process_id = int(open('%s/myconnectome/.started' %(home_folder),'rb').readlines()[0][0:-1])
     try:
         os.kill(process_id, 0)
     except OSError:
