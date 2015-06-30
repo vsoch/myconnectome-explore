@@ -75,7 +75,7 @@ def show_log():
 
 def read_log(logfile):
     logg = open(logfile,'rb').readlines()
-    logg = [l[0:-1] for l in logg]
+    logg = [l[0:-1].decode("utf-8").replace("&#39;", "'") for l in logg]
     logg = Markup('<br>'.join(logg))
     return logg
 
