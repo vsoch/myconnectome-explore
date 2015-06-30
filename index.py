@@ -156,7 +156,7 @@ def create_context(links,counter):
             counter+=1
             urls.append(filename.replace('/var/www',''))
             descriptions.append(description)
-            styles.append('color:rgb(25, 234, 25)')
+            styles.append('color:rgb(25, 234, 25);font-weight:400')
             titles.append(description)
         else:
             urls.append('#')
