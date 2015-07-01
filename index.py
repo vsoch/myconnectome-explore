@@ -13,13 +13,13 @@ index = AutoIndex(app, browse_root='/var/www/results',add_url_rules=False)
 # Global Data browser functions
 def get_lookup():
     return {"metab":"metabolomics clustering",
-              "fullmetab":"single metabolites",
-              "wgcna":"weighted correlation network analysis",
-              "behav":"behavioral variables",
-              "netdata":"brain network measures",
-              "bwcorr":"between network correlation",
-              "wincorr":"within-network correlation",
-              "immport":"gene expression (immune)"}
+            "fullmetab":"single metabolites",
+            "wgcna":"weighted correlation network analysis",
+            "behav":"behavioral variables",
+            "netdata":"brain network measures",
+            "bwcorr":"between network correlation",
+            "wincorr":"within-network correlation",
+            "immport":"gene expression (immune)"}
 
 
 def prepare_banner():
@@ -62,6 +62,12 @@ def show_log():
     err_log = read_log('/var/www/results/myconnectome/myconnectome_job.err')
     out_log = read_log('/var/www/results/myconnectome/myconnectome_job.out')
 
+    # Get the context for each domain and count of # analyses
+    timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses = get_context()
+
+    # Get analysis status
+    analysis_status = get_analysis_status(counter,number_analyses)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -70,7 +76,8 @@ def show_log():
                                       letters=letters,
                                       colors=colors,
                                       xcoords=xcoords,
-                                      ycoords=ycoords)
+                                      ycoords=ycoords,
+                                      analysis_status=analysis_status)
 
 
 def read_log(logfile):
@@ -82,6 +89,45 @@ def read_log(logfile):
 
 @app.route('/')
 def show_analyses():
+
+    # Get the context for each domain and count of # analyses
+    timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses = get_context()
+
+    # Get analysis status
+    analysis_status = get_analysis_status(counter,number_analyses)
+
+    # Generate banner
+    letters,colors,xcoords,ycoords = prepare_banner()
+
+    return render_template('index.html',timeseries_context=timeseries_context,
+                                        rna_context=rna_context,
+                                        meta_context=meta_context,
+                                        analysis_status=analysis_status,
+                                        rsfmri_context=rsfmri_context,
+                                        letters=letters,
+                                        colors=colors,
+                                        xcoords=xcoords,
+                                        ycoords=ycoords)
+
+
+def get_analysis_status(counter,number_analyses):
+
+    # The counter determines if we've finished running analyses
+    analysis_status = 'Analysis is Running'
+
+    # Check if the process is still running
+    process_running = check_process()
+
+    # If the process is not running
+    if process_running == False:
+        if counter == number_analyses:
+            analysis_status = 'Analysis Complete'
+        else:
+            analysis_status = 'Check for Error'
+    return analysis_status
+
+
+def get_context():
 
     timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses.html','Timeseries analysis results'),
                        ('/var/www/results/myconnectome/timeseries/Make_timeseries_plots.html','Timeseries plots'),
@@ -99,10 +145,10 @@ def show_analyses():
 
     rsfmri_files =       [('/var/www/results/myconnectome/rsfmri/QA_summary_rsfmri.html','Resting fMRI QA results'),
                           ('/var/www/results/myconnectome/rsfmri','Listing of all files')]
-    
+
     # How many green links should we have?
     number_analyses = len(meta_files) + len(rna_files) + len(timeseries_files) + len(rsfmri_files)
-
+    
     # Check if the file exists, render context based on existence            
     counter = 0
     timeseries_context,counter = create_context(timeseries_files,counter)
@@ -110,31 +156,8 @@ def show_analyses():
     meta_context,counter = create_context(meta_files,counter)
     rsfmri_context,counter = create_context(rsfmri_files,counter)
 
-    # The counter determines if we've finished running analyses
-    analysis_status = 'Analysis is Running'
+    return timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses
 
-    # Check if the process is still running
-    process_running = check_process()
-
-    # If the process is not running
-    if process_running == False:
-        if counter == number_analyses:
-            analysis_status = 'Analysis Complete'
-        else:
-            analysis_status = 'Check for Error'
-
-    # Generate banner
-    letters,colors,xcoords,ycoords = prepare_banner()
-
-    return render_template('index.html',timeseries_context=timeseries_context,
-                                        rna_context=rna_context,
-                                        meta_context=meta_context,
-                                        analysis_status=analysis_status,
-                                        rsfmri_context=rsfmri_context,
-                                        letters=letters,
-                                        colors=colors,
-                                        xcoords=xcoords,
-                                        ycoords=ycoords)
 
 # Check if python process is still running
 def check_process():
@@ -176,6 +199,12 @@ def data_chooser():
     # Human interpretable labels
     lookup = get_lookup()
  
+    # Get the context for each domain and count of # analyses
+    timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses = get_context()
+
+    # Get analysis status
+    analysis_status = get_analysis_status(counter,number_analyses)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
    
@@ -184,7 +213,8 @@ def data_chooser():
                                           letters=letters,
                                           colors=colors,
                                           xcoords=xcoords,
-                                          ycoords=ycoords)
+                                          ycoords=ycoords,
+                                          analysis_status=analysis_status)
 
 # Variable selection
 @app.route('/explore/<variable1>/<variable2>')
