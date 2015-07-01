@@ -226,6 +226,12 @@ def render_table(variable1,variable2):
     lookup = get_lookup()
     table = make_table(variable1,variable2)
 
+    # Get the context for each domain and count of # analyses
+    timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses = get_context()
+
+    # Get analysis status
+    analysis_status = get_analysis_status(counter,number_analyses)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -235,7 +241,8 @@ def render_table(variable1,variable2):
                                           letters=letters,
                                           colors=colors,
                                           xcoords=xcoords,
-                                          ycoords=ycoords)
+                                          ycoords=ycoords,
+                                          analysis_status=analysis_status)
 
 
 # Read in a particular input file to render table
