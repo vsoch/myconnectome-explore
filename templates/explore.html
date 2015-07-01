@@ -24,7 +24,7 @@
       $(document).ready( function() {
         $('#tabley').bind('dynatable:init', function(e, dynatable) {
       dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
-       return parseFloat(record.qvalue.replace(/,/,'')) <= parseFloat(queryValue);
+       return abs(parseFloat(record.qvalue.replace(/,/,''))) <= parseFloat(queryValue);
       };
     }).dynatable({
            table: {
