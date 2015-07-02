@@ -129,7 +129,7 @@ def get_analysis_status(counter,number_analyses):
 
 def get_context():
 
-    timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses.html','Timeseries analysis results'),
+    timeseries_files = [('/var/www/results/myconnectome/timeseries/timeseries_analyses_annot.html','Timeseries analysis results'),
                        ('/var/www/results/myconnectome/timeseries/Make_timeseries_plots.html','Timeseries plots'),
                        ('/var/www/results/myconnectome/timeseries/Make_combined_timeseries_table.html','Table of top timeseries results'),
                        ('/var/www/results/myconnectome/timeseries/Make_Timeseries_Heatmaps.html','Timeseries longitudinal heatmaps'),
