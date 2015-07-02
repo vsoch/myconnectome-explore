@@ -260,8 +260,10 @@ def make_table(variable1,variable2):
     tdrift = tmp["t.drift"].tolist()
     nobs = tmp.nobs.tolist()
     pval_bh = tmp.pval_bh.tolist()
+    abscor = ["%.9f" %abs(x) for x in tmp["cor.val"].tolist()]
+    qval_sort = ["%.9f" %x for x in tmp.pval_bh.tolist()]
 
-    return zip(xvar,yvar,corval,tarima,tdrift,nobs,pval_bh)
+    return zip(xvar,yvar,corval,tarima,tdrift,nobs,pval_bh,abscor,qval_sort)
 
 
 if __name__ == '__main__':

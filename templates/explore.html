@@ -2,8 +2,8 @@
 
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>MyConnectome Data Browser</title>
+        <meta charset="utf-8">
+        <title>MyConnectome Data Browser</title>
         {% include 'header.html' %}
         <link rel="stylesheet" media="all" href="https://s3.amazonaws.com/dynatable-docs-assets/css/jquery.dynatable.css" /> 
         <script src='https://code.jquery.com/jquery-2.1.4.min.js'></script>
@@ -21,21 +21,12 @@
 {% include 'banner.html' %}
 
   <script>
-// Custom sort function for the correlation column in table
-// Our custom sort function
-function absCorrSort(a, b, attr, direction) {
-  var comparison = a.correlation - b.correlation;
-  return direction > 0 ? comparison : -comparison;
-};
-
 
 $(document).ready( function() {
     $('#tabley').bind('dynatable:init', function(e, dynatable) {
         dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
-            return abs(parseFloat(record.qvalue.replace(/,/,''))) <= parseFloat(queryValue);
-        };
-        dynatable.sorts.functions["correlation"] = absCorrSort;
-        })
+        }
+     })
 
          // Initialize the dynatable
           .dynatable({
@@ -45,11 +36,6 @@ $(document).ready( function() {
           inputs: {
               queries: $('#thresh-search')
           },
-          dataset: {
-              sortTypes: {
-                  corval: 'absCorrSort'
-             }
-          },
         });
       });
     </script>
@@ -58,45 +44,47 @@ $(document).ready( function() {
 <div class="row">
     <div class="col-md-2" style="z-index:5;margin-right:80px">
             <div id="wrapper">
-		<nav id="main_nav" style='margin-top:50px'>
-		    <ul>
-	                <li>
-			    <a href="">SELECT THE FIRST VARIABLE</a>
-		            <ul>
+                <nav id="main_nav" style='margin-top:50px'>
+                    <ul>
+                        <li>
+                            <a href="">SELECT THE FIRST VARIABLE</a>
+                            <ul>
                                 {% for category,subcategory in dropdown.iteritems() %}
-			        <li><a href="">{{ lookup[category] }}</a>
+                                <li><a href="">{{ lookup[category] }}</a>
                                 <ul>
                                     <li style="background-color:#4F92AF"><a href="#">SELECT THE SECOND VARIABLE</a></li>
                                     {% for item in subcategory %}
                                     <!-- Note - if deployed in subdirectory of server, you must hard code path here-->
-    				    <li><a href="/explore/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
-                                    {% endfor %}                     
+                                    <li><a href="/explore/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
+                                    {% endfor %}
                                 </ul>
-                                </li>                
+                                </li>
                                 {% endfor %}
-	               	   </ul>
-		       </li>
-	           </ul>
-	       </nav>	
+                           </ul>
+                       </li>
+                   </ul>
+               </nav>
           </div>
     </div><!--end column-->
     {% if table is defined %}
     <div class="col-md-8" style="margin-top:150px">
-    P-Value (FDR) Threshold:
-  <<input id="thresh-search" type=number step=0.01 />
+    q-value (FDR corrected p-value):
+   <input id="thresh-search" type=number step=0.01 />
    <table id ="tabley" class="table">
        <thead>
            <tr>
                <th>x variable</th>
                <th>y variable</th>
-               <th>correlation</th>
+               <th type="number" data-dynatable-sorts="abscorr">correlation</th>
                <th>T (arima)</th>
-               <th style="width:130px">number obs.</th>
-               <th title="(BH) correction">qvalue</th>
+              <th type="number" style="width:130px">number obs.</th>
+               <th type="number" title="(BH) correction" data-dynatable-sorts="qval_sort">qvalue</th>
+               <th type="number" class="hidden">abscorr</th>
+               <th type="number" class="hidden">qval_sort</th>
            </tr>
        </thead>
-       <tbody>  
-          {% for xvar, yvar, corval, tarima, tdrift, nobs, pval in table %}
+       <tbody>
+          {% for xvar, yvar, corval, tarima, tdrift, nobs, pval, abscor, qval_sort in table %}
           <tr>
               <td>{{ xvar }}</td>
               <td>{{ yvar }}</td>
@@ -104,6 +92,8 @@ $(document).ready( function() {
               <td>{{ tarima }}</td>
               <td>{{ nobs }}</td>
               <td>{{ pval }}</td>
+              <td class="hidden">{{ abscor }}</td>
+              <td class="hidden">{{ qval_sort }}</td>
           </tr>
           {% endfor %}
        </tbody>
@@ -114,42 +104,3 @@ $(document).ready( function() {
 </div>
 </div>
 <script>
-
-// Dynamic banner
-var width = 1600,
-    height = 100
-
-var svg = d3.select("#banner").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-
-// the data will be appended here
-raw = {"letters":[{{ letters|safe }}],
-       "colors":[{{ colors|safe }}],
-       "x":[{{ xcoords|safe }}],
-       "y":[{{ ycoords|safe }}]};
-
-data = []
-for (i = 0; i < raw.letters.length; i++) { 
-  data.push({"letter":raw.letters[i],"color":raw.colors[i],"x":+raw.x[i],"y":+raw.y[i]});
-}
-
-var text = svg.selectAll("text")
-    .data(data)
-    .enter()
-    .append("text");
-
-var textLabels = text
-    .attr("x", function(d,i) { return d.x; })
-    .attr("y", function(d,i) { return d.y + 30; })
-    .style("fill",function(d){ return d.color })
-    .style("font-family","'Roboto Condensed', sans-serif")
-    .text( function (d) { return d.letter })
-    .on('mouseover.color', function(d) {
-        d3.select(this).style("fill", "#2997ab");
-     })
-
-</script>
-</body>
-{% include 'footer.html' %}
-</html>
