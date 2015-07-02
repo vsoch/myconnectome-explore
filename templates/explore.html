@@ -21,18 +21,35 @@
 {% include 'banner.html' %}
 
   <script>
-      $(document).ready( function() {
-        $('#tabley').bind('dynatable:init', function(e, dynatable) {
-      dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
-       return abs(parseFloat(record.qvalue.replace(/,/,''))) <= parseFloat(queryValue);
-      };
-    }).dynatable({
-           table: {
-             defaultColumnIdStyle: 'trimDash'
+// Custom sort function for the correlation column in table
+// Our custom sort function
+function absCorrSort(a, b, attr, direction) {
+  var comparison = a.correlation - b.correlation;
+  return direction > 0 ? comparison : -comparison;
+};
+
+
+$(document).ready( function() {
+    $('#tabley').bind('dynatable:init', function(e, dynatable) {
+        dynatable.queries.functions['thresh-search'] = function(record, queryValue) {
+            return abs(parseFloat(record.qvalue.replace(/,/,''))) <= parseFloat(queryValue);
+        };
+        dynatable.sorts.functions["correlation"] = absCorrSort;
+        })
+
+         // Initialize the dynatable
+          .dynatable({
+          table: {
+              defaultColumnIdStyle: 'trimDash'
            },
-       inputs: {
-        queries: $('#thresh-search')
-      }
+          inputs: {
+              queries: $('#thresh-search')
+          },
+          dataset: {
+              sortTypes: {
+                  corval: 'absCorrSort'
+             }
+          },
         });
       });
     </script>
