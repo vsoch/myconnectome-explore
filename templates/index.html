@@ -23,21 +23,48 @@
     <!-- Left Box-->
     <div class='logo_box'><h1>MyConnectome<br/>Analyses</h1>
        <div class='links'>
-        <!-- Analysis Status Button: State1: there is an error -->
-        {% if analysis_status == 'Check for Error' %}
-        <a class='btn btn-default' href='/log' role='button' style='background-color:#2997ab;margin-bottom:40px;color:white'>{{ analysis_status }}</a>
-        <!-- Analysis Status Button: State2: analyses are finished! -->
-        {% elif analysis_status == 'Analysis Complete' %}
-        <a class='btn btn-default' href='/explore' role='button' style='background-color:#2997ab;margin-bottom:40px;color:white'>Analysis Complete - Explore Data</a>
-        {% else %}
-        <a class='btn btn-default' href='#' role='button' style='background-color:#2997ab;margin-bottom:40px;color:white' disabled>{{ analysis_status }}</a>
-        {% endif %}
+            <div class="progress">
+               {% if analysis_status == 'Check for Error' %}
+               <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{ percent_complete }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_complete }}%;" data-toggle="tooltip" data-placement="top" title="{{ percent_complete }}% complete">
+               <span class="progress-type">{{ percent_complete }}%</span>
+               {% elif analysis_status == 'Analysis Complete' %}
+               <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;" data-toggle="tooltip" data-placement="top" title="Analysis complete">
+               <span class="progress-type">100% Complete</span>
+               {% else %}
+               <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ percent_complete }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_complete }}%;" data-toggle="tooltip" data-placement="top" title="{{ percent_complete }}% complete">
+                <span class="progress-type">{{ percent_complete }}%</span>
+               {% endif %}
+                </div>
+            </div>
+
+           <div class="row">
+                {% if analysis_status == 'Check for Error' %}
+                <div class="col-md-8">
+                    <div class='well box message-box'>Last complete <a href="{{ last_completed_path }}">{{ last_completed_name }}</a></div>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-xs btn-check" style="padding-top:6px;padding-left:12px" role="button" href="/log">{{ analysis_status }}</a>
+                </div>
+                    <!-- Analysis Status Button: State2: analyses are finished! -->
+                {% elif analysis_status == 'Analysis Complete' %}
+                <div class="col-md-8">
+                    <div class='well box message-box'>Analysis Complete</div>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-xs btn-check" style="padding-top:6px;padding-left:12px" role="button" href="/explore">Explore Data</a>
+                </div>
+                {% else %}
+               <div class="col-md-12">
+                   <div class='well box message-box' style="width:380px;padding-left:5px">EST. time remaining: {{ time_remaining }} minutes</div>
+               </div>
+                {% endif %}
+            </div><!--end row-->
             <ul>
                <li><a href='https://github.com/poldrack/myconnectome-vm' target='_blank'>Learn more about the MyConnectome Virtual Machine</a></li>
 
                <li><a href='http://myconnectome.org' target='_blank'>Learn more about the MyConnectome Project</a></li>
              </ul>
-       </div>
+       </div><!-- End links -->
     </div><!-- End Left Box-->
 
     <!-- Right Box-->

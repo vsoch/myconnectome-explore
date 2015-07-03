@@ -29,7 +29,7 @@ def prepare_banner():
     letters, colors, xcoords, ycoords = generate(hidden="MYCONNECTOME",
                                                  color="#CCC",
                                                  color_hidden="#000")
- 
+
     # Format for d3 input
     letters = format_data(letters)
     colors = format_data(colors)
@@ -37,12 +37,29 @@ def prepare_banner():
     ycoords = format_data([str(x) for x in ycoords])
     return letters,colors,xcoords,ycoords
 
+def get_percent_complete():
+    timefile = os.path.join(os.environ['MYCONNECTOME_DIR'],'/myconnectome/utils/.expected_times.txt')
+    times = pandas.read_csv(timefile,sep="\t")
+    total_time = times.ELAPSED.sum()
+    # Find which output files exist
+    exist_index = [x for x in range(0,len(times.OUTNAME)) if os.path.exists(times.OUTNAME[x])]
+    remain_index = [x for x in times.index if x not in exist_index]
+    time_remaining = int(times.ELAPSED.loc[remain_index].sum())/60
+    percent_complete = int(100*(times.ELAPSED.loc[exist_index].sum() / total_time))
+    # Show link to last analysis completed
+    try:
+        last_completed_path = times.OUTNAME.loc[exist_index[-1]].replace(os.environ["MYCONNECTOME_DIR"],"/results/myconnectome")
+        last_completed_name = os.path.basename(last_completed_path).split(".")[0].replace("_"," ")
+    except:
+        last_completed_path = "#"
+        last_completed_name = "..."
+    return last_completed_path,last_completed_name,percent_complete,time_remaining
 
 def prepare_data():
 
     data_files = glob('results/myconnectome/timeseries/out*.txt')
     data_files.sort()
-    dont_include = ['fd','pindex']
+    dont_include = ['fd','pindex','psoriasis','mood']
 
     # Split files into different categories, subcategories
     categories = [f.split('.')[2].split('_')[0] for f in data_files]
@@ -99,6 +116,9 @@ def show_analyses():
     # Get analysis status
     analysis_status = get_analysis_status(counter,number_analyses)
 
+    # Get the percentage of analyses complete
+    last_completed_path,last_completed_name,percent_complete,time_remaining = get_percent_complete()
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -110,8 +130,11 @@ def show_analyses():
                                         letters=letters,
                                         colors=colors,
                                         xcoords=xcoords,
-                                        ycoords=ycoords)
-
+                                        ycoords=ycoords,
+                                        percent_complete=percent_complete,
+                                        last_completed_path=last_completed_path,
+                                        last_completed_name=last_completed_name,
+                                        time_remaining=time_remaining)
 
 def get_analysis_status(counter,number_analyses):
 
@@ -128,7 +151,6 @@ def get_analysis_status(counter,number_analyses):
         else:
             analysis_status = 'Check for Error'
     return analysis_status
-
 
 def get_context():
 
@@ -151,7 +173,7 @@ def get_context():
 
     # How many green links should we have?
     number_analyses = len(meta_files) + len(rna_files) + len(timeseries_files) + len(rsfmri_files)
-    
+
     # Check if the file exists, render context based on existence            
     counter = 0
     timeseries_context,counter = create_context(timeseries_files,counter)
@@ -172,7 +194,7 @@ def check_process():
         return False
     else:
         return True
- 
+
 def create_context(links,counter):
     urls = []; descriptions = []; styles = []; titles = []
     for link in links:
@@ -196,12 +218,12 @@ def create_context(links,counter):
 # No variable selection
 @app.route('/explore')
 def data_chooser():
- 
+
     dropdown = prepare_data()
 
     # Human interpretable labels
     lookup = get_lookup()
- 
+
     # Get the context for each domain and count of # analyses
     timeseries_context,rna_context,meta_context,rsfmri_context,counter,number_analyses = get_context()
 
@@ -210,7 +232,7 @@ def data_chooser():
 
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
-   
+
     return render_template('explore.html',dropdown=dropdown,
                                           lookup=lookup,
                                           letters=letters,
@@ -222,7 +244,7 @@ def data_chooser():
 # Variable selection
 @app.route('/explore/<variable1>/<variable2>')
 def render_table(variable1,variable2):
- 
+
     dropdown = prepare_data()
 
     # Human interpretable labels
@@ -254,7 +276,7 @@ def make_table(variable1,variable2):
     # Read in appropriate data file
     data_file = 'results/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
     tmp = pandas.read_csv(data_file,sep=" ")
-    
+
     # Variables we want to save
     xvar = tmp.xvar.tolist()
     yvar = tmp.yvar.tolist()
@@ -267,7 +289,6 @@ def make_table(variable1,variable2):
     qval_sort = ["%.9f" %x for x in tmp.pval_bh.tolist()]
 
     return zip(xvar,yvar,corval,tarima,tdrift,nobs,pval_bh,abscor,qval_sort)
-
 
 if __name__ == '__main__':
     app.debug = True
