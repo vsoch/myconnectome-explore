@@ -16,10 +16,13 @@ def get_lookup():
             "fullmetab":"single metabolites",
             "wgcna":"weighted correlation network analysis",
             "behav":"behavioral variables",
-            "netdata":"brain network measures",
+            "netdat":"brain network measures",
             "bwcorr":"between network correlation",
             "wincorr":"within-network correlation",
-            "immport":"gene expression (immune)"}
+            "immport":"gene expression (immune)",
+            "psoriasis":"psoriasis",
+            "mood":"mood",
+            "food":"food"}
 
 
 def prepare_banner():
