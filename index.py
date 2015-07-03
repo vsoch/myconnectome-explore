@@ -44,12 +44,14 @@ def get_percent_complete():
     # Find which output files exist
     exist_index = [x for x in range(0,len(times.OUTNAME)) if os.path.exists(times.OUTNAME[x])]
     remain_index = [x for x in times.index if x not in exist_index]
-    time_remaining = int(times.ELAPSED.loc[remain_index].sum())/60
+    time_remaining = int(times.ELAPSED.loc[remain_index].sum())/60 + 1
     percent_complete = int(100*(times.ELAPSED.loc[exist_index].sum() / total_time))
     # Show link to last analysis completed
     try:
         last_completed_path = times.OUTNAME.loc[exist_index[-1]].replace(os.environ["MYCONNECTOME_DIR"],"/results/myconnectome")
         last_completed_name = os.path.basename(last_completed_path).split(".")[0].replace("_"," ")
+        if len(last_completed_name)>14:
+            last_completed_name = last_completed_name[0:14]
     except:
         last_completed_path = "#"
         last_completed_name = "..."
