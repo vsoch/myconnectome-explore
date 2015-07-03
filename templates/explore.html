@@ -75,10 +75,10 @@ $(document).ready( function() {
            <tr>
                <th>x variable</th>
                <th>y variable</th>
-               <th type="number" data-dynatable-sorts="abscorr">correlation</th>
-               <th>T (arima)</th>
-              <th type="number" style="width:130px">number obs.</th>
-               <th type="number" title="(BH) correction" data-dynatable-sorts="qval_sort">qvalue</th>
+               <th type="number" data-dynatable-sorts="abscorr" title="Pearson correlation between variables">correlation</th>
+               <th title="t value obtained from regressing X on Y variable in an ARIMA model">T (arima)</th>
+               <th type="number" style="width:130px">number obs.</th>
+               <th type="number" title="False discovery rate obtained using Benjamini-Hochberg procedure" data-dynatable-sorts="qval_sort">qvalue</th>
                <th type="number" class="hidden">abscorr</th>
                <th type="number" class="hidden">qval_sort</th>
            </tr>
