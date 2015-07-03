@@ -14,7 +14,7 @@ index = AutoIndex(app, browse_root='/var/www/results',add_url_rules=False)
 def get_lookup():
     return {"metab":"metabolomics clustering",
             "fullmetab":"single metabolites",
-            "wgcna":"weighted correlation network analysis",
+            "wgcna":"weighted gene coexpression network clusters",
             "behav":"behavioral variables",
             "netdat":"brain network measures",
             "bwcorr":"between network correlation",
