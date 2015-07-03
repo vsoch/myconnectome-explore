@@ -44,7 +44,7 @@
                     <div class='well box message-box' style="width:305px;margin-right: 0px;">Last complete <a href="{{ last_completed_path }}">{{ last_completed_name }}...</a></div>
                 </div>
                 <div class="col-md-2">
-                    <a class="btn btn-xs btn-check" style="padding-top:6px;padding-left:12px" role="button" href="/log">{{ analysis_status }}</a>
+                    <a class="btn btn-xs btn-check" style="color:white" role="button" href="/log">{{ analysis_status }}</a>
                 </div>
                     <!-- Analysis Status Button: State2: analyses are finished! -->
                 {% elif analysis_status == 'Analysis Complete' %}
