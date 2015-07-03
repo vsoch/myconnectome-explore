@@ -38,7 +38,7 @@ def prepare_banner():
     return letters,colors,xcoords,ycoords
 
 def get_percent_complete():
-    timefile = os.path.join(os.environ['MYCONNECTOME_DIR'],'/myconnectome/utils/.expected_times.txt')
+    timefile = os.path.join(os.environ['MYCONNECTOME_DIR'],'myconnectome/utils/.expected_times.txt')
     times = pandas.read_csv(timefile,sep="\t")
     total_time = times.ELAPSED.sum()
     # Find which output files exist
