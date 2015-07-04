@@ -3,6 +3,7 @@ from banner import generate, format_data
 from flask.ext.autoindex import AutoIndex
 from subprocess import Popen
 from glob import glob
+import zipfile
 import pandas
 import numpy
 import os
@@ -13,6 +14,12 @@ index = AutoIndex(app, browse_root='/var/www/results',add_url_rules=False)
 # MyConnectome Directory
 myconn = os.environ['MYCONNECTOME_DIR']
 
+# Zip files up into package
+def zip_files(files,output_name):
+    with zipfile.ZipFile(output_name, 'w') as myzip:
+        for f in files:
+            myzip.write(f)
+    
 # Global Data browser functions
 def get_lookup():
     return {"metab":"metabolomics clustering",
@@ -28,15 +35,19 @@ def get_lookup():
             "food":"food"}
 
 
-# Get list of files to download
 def get_download_files(analysis_status):
     if analysis_status == "Analysis Complete":
-        files = [x.replace("/var/www","") for x in glob("/var/www/results/myconnectome/timeseries/out*.txt")]
-        file_names = [os.path.basename(x) for x in files]
+        zip_file = "/var/www/results/myconnectome/timeseries/timeseries.zip"
+        if not os.path.exists(zip_file):
+            files = glob("/var/www/results/myconnectome/timeseries/out*.txt")
+            zip_files(files,zip_file)
+        file_name = os.path.basename(zip_file)
+        file_path = zip_file.replace("/var/www","")
     else:
-        files = ""
-        file_names = ""
-    return zip(files,file_names)
+        file_name = ""
+        file_path = ""
+    return zip([file_path],[file_name])
+
 
 def prepare_banner():
     letters, colors, xcoords, ycoords = generate(hidden="MYCONNECTOME",
@@ -289,6 +300,9 @@ def render_table(variable1,variable2):
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
+    # Link to download file
+    download_link = '/results/myconnectome/timeseries/out.dat.%s_%s.txt' %(variable1,variable2)
+
     return render_template('explore.html',dropdown=dropdown,
                                           lookup=lookup,
                                           table=table,
@@ -297,7 +311,8 @@ def render_table(variable1,variable2):
                                           xcoords=xcoords,
                                           ycoords=ycoords,
                                           analysis_status=analysis_status,
-                                          files=files)
+                                          files=files,
+                                          download_link=download_link)
 
 
 # Read in a particular input file to render table
