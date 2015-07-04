@@ -2,9 +2,13 @@
 <div class="modal fade download-modal" tabindex="-1" role="dialog" aria-labelledby="download-modal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-
-
-    </div>
+    {% for file, file_name in files %}
+        <div class="row">
+            <div class="col-md-8">{{ file_name }}</div>
+            <div class="col-md-2"><a href="{{ file }}"<i class="fa fa-cloud-download" style="color:black"></i></a></div>
+        </div>
+    {% endfor %}
+   </div>
   </div>
 </div>
 

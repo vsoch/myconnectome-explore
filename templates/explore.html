@@ -5,15 +5,13 @@
         <meta charset="utf-8">
         <title>MyConnectome Data Browser</title>
 
-        <link rel="stylesheet" media="all" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" /> 
         <link rel="stylesheet" media="all" href="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.css" />
         <script src='//code.jquery.com/jquery-1.11.1.min.js'></script>
         <script type='text/javascript' src='//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js'></script>
         <script src='//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js'></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.tooltip.min.js"></script>  
-      <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.2/js/foundation/foundation.tooltip.min.js"></script>  
 
         {% include 'header.html' %} 
         {% include 'dropdown.html' %} 
@@ -62,10 +60,10 @@
                <tr>
                    <th>x variable</th>
                    <th>y variable</th>
-                   <th type="number">correlation <a data-toggle="popover" title="correlation" data-content="Pearson correlation between values"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
-                   <th>T (arima) <a data-toggle="popover" title="T (arima)" data-content="t value obtained from regressing X on Y variable in an ARIMA model"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
+                   <th type="number">correlation <a data-toggle="popover" title="correlation" data-placement="top" data-content="Pearson correlation between values"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
+                   <th>T (arima) <a data-toggle="popover" title="T (arima)" data-placement="top" data-content="t value obtained from regressing X on Y variable in an ARIMA model"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
                    <th type="number" style="width:130px">number obs.</th>
-                   <th type="number">qvalue <a data-toggle="popover" title="q-value" data-content="False discovery rate obtained using Benjamini-Hockberg procedure"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
+                   <th type="number">qvalue <a data-toggle="popover" title="q-value" data-placement="top" data-content="False discovery rate obtained using Benjamini-Hockberg procedure"> <i style="color:white;padding-left:2px"class="fa fa-question-circle"></i></a></th>
                </tr>
            </thead>
            <tbody>
@@ -132,7 +130,9 @@ $(document).ready(function() {
 } );
 
 </script>
+{% if analysis_status == 'Analysis Complete' %}
 {% include 'download.html' %}
+{% endif %}
 
 </body>
 {% include 'footer.html' %}

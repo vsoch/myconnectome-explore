@@ -10,6 +10,9 @@ import os
 app = Flask(__name__)
 index = AutoIndex(app, browse_root='/var/www/results',add_url_rules=False)
 
+# MyConnectome Directory
+myconn = os.environ['MYCONNECTOME_DIR']
+
 # Global Data browser functions
 def get_lookup():
     return {"metab":"metabolomics clustering",
@@ -25,6 +28,16 @@ def get_lookup():
             "food":"food"}
 
 
+# Get list of files to download
+def get_download_files(analysis_status):
+    if analysis_status == "Analysis Complete":
+        files = glob("/var/www/results/myconnectome/timeseries/out*.txt")
+        file_names = [os.path.basename(x) for x in files]
+    else:
+        files = ""
+        file_names = ""
+    return zip(files,file_names)
+
 def prepare_banner():
     letters, colors, xcoords, ycoords = generate(hidden="MYCONNECTOME",
                                                  color="#CCC",
@@ -38,7 +51,7 @@ def prepare_banner():
     return letters,colors,xcoords,ycoords
 
 def get_percent_complete():
-    timefile = os.path.join(os.environ['MYCONNECTOME_DIR'],'myconnectome/utils/.expected_times.txt')
+    timefile = os.path.join(myconn,'myconnectome/utils/.expected_times.txt')
     times = pandas.read_csv(timefile,sep="\t")
     total_time = times.ELAPSED.sum()
     # Find which output files exist
@@ -48,7 +61,7 @@ def get_percent_complete():
     percent_complete = int(100*(times.ELAPSED.loc[exist_index].sum() / total_time))
     # Show link to last analysis completed
     try:
-        last_completed_path = times.OUTNAME.loc[exist_index[-1]].replace(os.environ["MYCONNECTOME_DIR"],"/results/myconnectome")
+        last_completed_path = times.OUTNAME.loc[exist_index[-1]].replace(myconn,"/results/myconnectome")
         last_completed_name = os.path.basename(last_completed_path).split(".")[0].replace("_"," ")
         if len(last_completed_name)>14:
             last_completed_name = last_completed_name[0:14]
@@ -90,6 +103,9 @@ def show_log():
     # Get analysis status
     analysis_status = get_analysis_status(counter,number_analyses)
 
+    # Get download links
+    files = get_download_files(analysis_status)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -99,8 +115,8 @@ def show_log():
                                       colors=colors,
                                       xcoords=xcoords,
                                       ycoords=ycoords,
-                                      analysis_status=analysis_status)
-
+                                      analysis_status=analysis_status,
+                                      files=files)
 
 def read_log(logfile):
     logg = open(logfile,'rb').readlines()
@@ -121,6 +137,9 @@ def show_analyses():
     # Get the percentage of analyses complete
     last_completed_path,last_completed_name,percent_complete,time_remaining = get_percent_complete()
 
+    # Get download links
+    files = get_download_files(analysis_status)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -136,7 +155,8 @@ def show_analyses():
                                         percent_complete=percent_complete,
                                         last_completed_path=last_completed_path,
                                         last_completed_name=last_completed_name,
-                                        time_remaining=time_remaining)
+                                        time_remaining=time_remaining,
+                                        files=files)
 
 def get_analysis_status(counter,number_analyses):
 
@@ -232,6 +252,9 @@ def data_chooser():
     # Get analysis status
     analysis_status = get_analysis_status(counter,number_analyses)
 
+    # Get download links
+    files = get_download_files(analysis_status)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -241,7 +264,8 @@ def data_chooser():
                                           colors=colors,
                                           xcoords=xcoords,
                                           ycoords=ycoords,
-                                          analysis_status=analysis_status)
+                                          analysis_status=analysis_status,
+                                          files=files)
 
 # Variable selection
 @app.route('/explore/<variable1>/<variable2>')
@@ -259,6 +283,9 @@ def render_table(variable1,variable2):
     # Get analysis status
     analysis_status = get_analysis_status(counter,number_analyses)
 
+    # Get download links
+    files = get_download_files(analysis_status)
+
     # Generate banner
     letters,colors,xcoords,ycoords = prepare_banner()
 
@@ -269,7 +296,8 @@ def render_table(variable1,variable2):
                                           colors=colors,
                                           xcoords=xcoords,
                                           ycoords=ycoords,
-                                          analysis_status=analysis_status)
+                                          analysis_status=analysis_status,
+                                          files=files)
 
 
 # Read in a particular input file to render table
