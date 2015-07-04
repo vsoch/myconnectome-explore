@@ -29,7 +29,7 @@
                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="{{ percent_complete }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_complete }}%;" data-toggle="tooltip" data-placement="top" title="{{ percent_complete }}% complete">
                <span class="progress-type">{{ percent_complete }}%</span>
                {% elif analysis_status == 'Analysis Complete' %}
-               <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;" data-toggle="tooltip" data-placement="top" title="Analysis complete">
+               <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;" data-toggle="tooltip" data-placement="top" title="Analyses complete">
                <span class="progress-type">100% Complete</span>
                {% else %}
                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="{{ percent_complete }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent_complete }}%;" data-toggle="tooltip" data-placement="top" title="{{ percent_complete }}% complete">
@@ -49,7 +49,7 @@
                     <!-- Analysis Status Button: State2: analyses are finished! -->
                 {% elif analysis_status == 'Analysis Complete' %}
                 <div class="col-md-8">
-                    <div class='well box message-box' style="width:305px;margin-right: 0px;">Analysis Complete</div>
+                    <div class='well box message-box' style="width:305px;margin-right: 0px;">Analyses Complete</div>
                 </div>
                 <div class="col-md-2">
                     <a class="btn btn-xs btn-check" style="padding-top:7px;padding-left:20px;width:120px" role="button" href="/explore">Explore Data</a>
