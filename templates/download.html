@@ -1,14 +1,16 @@
 <!-- Download modal -->
 <div class="modal fade download-modal" tabindex="-1" role="dialog" aria-labelledby="download-modal">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    {% for file, file_name in files %}
-        <div class="row">
-            <div class="col-md-8">{{ file_name }}</div>
-            <div class="col-md-2"><a href="{{ file }}"<i class="fa fa-cloud-download" style="color:black"></i></a></div>
+  <div class="modal-dialog modal-lg" style="width:400px">
+    <div class="modal-content" style="padding-bottom:40px;border-radius:2px">
+        <div class="modal-header" style="margin-bottom:20px;background-color:#4F92Af;">
+            <h3 style="color:white"><strong>Download</strong></h3>
         </div>
-    {% endfor %}
-   </div>
+            {% for file, file_name in files %}
+            <div class="row">
+                <div class="col-md-9">{{ file_name }}</div>
+                <div class="col-md-1"><a target="_blank" href="{{ file }}"<i class="fa fa-cloud-download" style="color:black"></i></a></div>
+            </div>
+            {% endfor %}
+     </div>
   </div>
 </div>
-

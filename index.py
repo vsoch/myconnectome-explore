@@ -31,7 +31,7 @@ def get_lookup():
 # Get list of files to download
 def get_download_files(analysis_status):
     if analysis_status == "Analysis Complete":
-        files = glob("/var/www/results/myconnectome/timeseries/out*.txt")
+        files = [x.replace("/var/www","") for x in glob("/var/www/results/myconnectome/timeseries/out*.txt")]
         file_names = [os.path.basename(x) for x in files]
     else:
         files = ""
