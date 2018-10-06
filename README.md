@@ -5,8 +5,7 @@ This code base provides a flask-driven infrastructure to explore the myconnectom
 #### myConnectome-vm
 If you are interested in reproducing all analyses in your own virtual machine, it is recommended to follow instructions in the [myconnectome-vm repository](https://github.com/poldrack/myconnectome-vm). This vm will use myconnectome-explore to provide interactive exploration for the data that you produce. The installation is automatic and you do not need to do anything beyond following instructions to set up the virtual machine.
 
-If you are looking for a quick (non production) deployment container of the application,
-see the [poldracklab/myconnectome-explore](https://hub.docker.com/r/poldracklab/myconnectome-explore/) container served by the [add/dockerfile](https://github.com/vsoch/myconnectome-explore/tree/add/dockerfile) branch of this repository. This is a container that you can run locally to see
+If you are looking for a quick (non production) deployment (via a Docker container) of the application, see the [poldracklab/myconnectome-explore](https://hub.docker.com/r/poldracklab/myconnectome-explore/) container served by the [add/dockerfile](https://github.com/vsoch/myconnectome-explore/tree/add/dockerfile) branch of this repository. This is a container that you can run locally to see
 a single view of the interface (the interactive logs and progress pages are not relevant). 
 
 ```bash
