@@ -10,9 +10,6 @@ FROM continuumio/miniconda3
 LABEL maintainer vsochat@stanford.edu
 
 RUN apt-get update && apt-get install -y git
-RUN git clone https://github.com/poldrack/myconnectome.git /opt/myconnectome
-ENV MYCONNECTOME_DIR /opt/myconnectome
-
 RUN conda update -n base conda && \
     /opt/conda/bin/conda install pandas
 
