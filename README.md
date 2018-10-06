@@ -10,52 +10,65 @@ If you are interested in reproducing all analyses in your own virtual machine, i
 
 ## Run with Docker
 The recommended approach is to run this with Docker. We have a pre-built Docker
-container to help you do this:
+container [here](https://hub.docker.com/r/poldracklab/myconnectome-explore/) 
+to help you do this. You will need to bind your local port "80" to port
+"5000" in the container where Flask is serving the application.
 
 ```bash
-docker build -t vanessa/myconnectome-explore .
-docker run -p 80:5000 vanessa/myconnectome-explore
+docker run -p 80:5000 poldracklab/myconnectome-explore
 ```
-And then open up your browser to `http://localhost/`
+
+And then open up your browser to `http://127.0.0.1`
+
+If you have something running on your port 80, you can of course use port 5000 instead:
+
+```bash
+docker run -p 5000:5000 poldracklab/myconnectome-explore
+```
+
+You can also choose to build the container locally, if you want to edit the
+Dockerfile or otherwise.
+
+```bash
+git clone -b add/dockerfile https://github.com/vsoch/myconnectome-explore
+cd myconnectome-explore
+docker build -t poldracklab/myconnectome-explore .
+```
 
 ## standalone application
-You should first clone this repository
+Running the application locally is not recommended. However, it is possible 
+if you run the steps in the Dockerfile to download the myconnectome data and
+install dependencies. That might look something like this.
+You should again first clone this repository
 
-      git clone https://github.com/vsoch/myconnectome-explore
-      cd myconnectome-explore
+```bash
+git clone -b add/dockerfile https://github.com/vsoch/myconnectome-explore
+cd myconnectome-explore
+```
 
-Install flask and flup
-
-      pip install flask
-      pip install flup
-
-And then run the server locally
+For your python installation (whether system, virtual environment, or conda 
+environment) you need to install dependencies:
  
-      python databrowser.py
+```bash
+conda install pandas
+pip install flask flask-autoindex
+```
+
+And then make sure that the "myconnectome" directory is downloaded,
+and you export an environment variable for the application to find.
+For example:
+
+```bash
+git clone https://github.com/poldrack/myconnectome.git
+ENV MYCONNECTOME_DIR /myconnectome/myconnectome
+```
+
+Then, to run the application:
+
+```bash
+python databrowser.py
+```
 
 Don't worry about index.py - that is the executable that is integrated into the myconnectome-vm.
-
-### deployment
-
-Your deployment environment will need flask installed to the python that will be running the application. If you are creating a local python environment to run the application, we reccommend using anaconda, as it comes with most of the libraries that you should need. You should also change "debug" "True" to debug "False" in the databrowser.py file. FInally, in the folder you need two files: an .htaccess and a myconnectome.fcgi. The myconnectome.fcgi should look as follows:
-
-      #!/usr/bin/env python
-      from flup.server.fcgi import WSGIServer
-      from databrowser import app as application
-      WSGIServer(application).run()
-
-The first line is the path to your python executable with flup and flask installed. 
-
-Your .htaccess should look like this, given the location of the fcgi file in `/code/myconnectome.fcgi`:
-
-      Options +ExecCGI
-      AddHandler fcgid-script .fcgi 
-      RewriteEngine On
-      RewriteCond %{REQUEST_FILENAME} !=/code/myconnectome.fcgi
-      RewriteRule ^(.*)$ myconnectome.fcgi/$1 [QSA,L]
-
-Finally, you need to make your myconnectome.fcgi executable
-
-      chmod u+x myconnectome.fcgi
-
-That should be it! Going to the url yourserver/myconnectome should show the databrowser.
+If you are interested in a deployment of that, see the master branch and
+how it's deployed in the [myconnectome-vm](https://github.com/poldrack/myconnectome-vm/blob/master/Vagrantfile#L76).
