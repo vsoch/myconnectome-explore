@@ -7,7 +7,17 @@ If you are interested in reproducing all analyses in your own virtual machine, i
 
 If you are looking for a quick (non production) deployment container of the application,
 see the [poldracklab/myconnectome-explore](https://hub.docker.com/r/poldracklab/myconnectome-explore/) container served by the [add/dockerfile](https://github.com/vsoch/myconnectome-explore/tree/add/dockerfile) branch of this repository. This is a container that you can run locally to see
-the interface. If you want to see how the application is deployed in production,
+a single view of the interface (the interactive logs and progress pages are not relevant). 
+
+```bash
+# Bind to port 80 to open at http://127.0.0.1
+docker run -p 80:5000 poldracklab/myconnectome-explore  
+
+# Bind to port 5000 to open at http://127.0.0.1:5000
+docker run -p 5000:5000 poldracklab/myconnectome-explore 
+```
+
+If you want to see how the application is deployed in production,
 please see this master branch being cloned in the [myconnectome-vm Vagrantfile](https://github.com/poldrack/myconnectome-vm/blob/master/Vagrantfile#L76).
 
 ### standalone application
