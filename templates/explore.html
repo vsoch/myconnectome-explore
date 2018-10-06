@@ -37,13 +37,13 @@
                         <li>
                             <a href="">SELECT THE FIRST VARIABLE</a>
                             <ul>
-                                {% for category,subcategory in dropdown.iteritems() %}
+                                {% for category,subcategory in dropdown.items() %}
                                 <li><a href="">{{ lookup[category] }}</a>
                                 <ul>
                                     <li style="background-color:#4F92AF"><a href="#">SELECT THE SECOND VARIABLE</a></li>
                                     {% for item in subcategory %}
                                     <!-- Note - if deployed in subdirectory of server, you must hard code path here-->
-                                    <li><a href="/explore/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
+                                    <li><a href="/{{ category }}/{{ item }}">{{ lookup[item] }}</a></li>
                                     {% endfor %}
                                                                                                        </ul>
                                 </li>

@@ -1,23 +1,40 @@
 from flask import Flask, render_template
+from banner import generate, format_data
+from flask_autoindex import AutoIndex
 from glob import glob
 import pandas
 import json
-import numpy
 import os
 
 app = Flask(__name__)
-
+index = AutoIndex(app, browse_root='results', add_url_rules=False)
+@app.route('/results')
+@app.route('/results/<path:path>')
+def autoindex(path='.'):
+    print(path)
+    return index.render_autoindex(path)
 
 def get_lookup():
     return {"metab":"metabolomics clustering",
-              "fullmetab":"single metabolites",
-              "wgcna":"weighted correlation network analysis",
-              "behav":"behavioral variables",
-              "netdata":"brain network measures",
-              "bwcorr":"between network correlation",
-              "wincorr":"within-network correlation",
-              "immport":"gene expression (immune)"}
+            "fullmetab":"single metabolites",
+            "wgcna":"weighted correlation network analysis",
+            "behav":"behavioral variables",
+            "netdata":"brain network measures",
+            "bwcorr":"between network correlation",
+            "wincorr":"within-network correlation",
+            "immport":"gene expression (immune)"}
 
+def prepare_banner():
+    letters, colors, xcoords, ycoords = generate(hidden="MYCONNECTOME",
+                                                 color="#CCC",
+                                                 color_hidden="#000")
+
+    # Format for d3 input
+    letters = format_data(letters)
+    colors = format_data(colors)
+    xcoords = format_data([str(x) for x in xcoords])
+    ycoords = format_data([str(x) for x in ycoords])
+    return letters, colors, xcoords, ycoords
 
 def prepare_data():
 
@@ -30,7 +47,7 @@ def prepare_data():
     subcategories = [f.split('.')[2].split('_')[1] for f in data_files]
 
     dropdown = dict()
-    for d in numpy.unique(categories):
+    for d in list(set(categories)):
         if d not in dont_include:
             dropdown[d] = [subcategories[x] for x in range(0,len(categories)) if categories[x]==d]
 
@@ -45,7 +62,16 @@ def data_chooser():
     # Human interpretable labels
     lookup = get_lookup()
     
-    return render_template('explore.html',dropdown=dropdown,lookup=lookup)
+    # Generate banner
+    letters, colors, xcoords, ycoords = prepare_banner()
+
+    return render_template('explore.html', 
+                            dropdown=dropdown,
+                            letters=letters,
+                            colors=colors,
+                            xcoords=xcoords,
+                            ycoords=ycoords,
+                            lookup=lookup)
 
 # Variable selection
 @app.route('/<variable1>/<variable2>')
@@ -55,9 +81,22 @@ def render_table(variable1,variable2):
 
     # Human interpretable labels
     lookup = get_lookup()
-    table = make_table(variable1,variable2)
+    table = make_table(variable1, variable2)
 
-    return render_template('explore.html',dropdown=dropdown,lookup=lookup,table=table)
+    # Generate banner
+    letters, colors, xcoords, ycoords = prepare_banner()
+
+    # Link to download file
+    download_link = '/results/pre-generated/timeseries/out.dat.%s_%s.txt' %(variable1, variable2)
+
+    return render_template('explore.html', dropdown=dropdown,
+                                           download_link=download_link,
+                                           lookup=lookup,
+                                           letters=letters,
+                                           colors=colors,
+                                           xcoords=xcoords,
+                                           ycoords=ycoords,
+                                           table=table)
 
 
 # Read in a particular input file to render table
@@ -80,5 +119,4 @@ def make_table(variable1,variable2):
 
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    app.run(debug=True, host='0.0.0.0')

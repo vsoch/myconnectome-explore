@@ -10,12 +10,12 @@ row: row for hidden text
 length: row length
 """
 
-def generate(hidden,rows=3,row=2,length=124,color="#CCC",color_hidden="#000"):
+def generate(hidden, rows=3, row=2, length=124, color="#CCC", color_hidden="#000"):
 
     hidden = list(hidden)
 
     # Generate a random set of letters
-    abc = string.letters.upper()
+    abc = string.ascii_uppercase
     letters = []
     for rr in range(rows):
         letters.append([random.choice(abc) for r in range(length)])

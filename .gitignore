@@ -1,0 +1,5 @@
+.htaccess
+*.fcgi
+__pycache__
+*.pyci
+myconnectome

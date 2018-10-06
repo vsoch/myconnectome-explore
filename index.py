@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, Markup
 from banner import generate, format_data
-from flask.ext.autoindex import AutoIndex
+from flask_autoindex import AutoIndex
 from subprocess import Popen
 from glob import glob
 import zipfile
